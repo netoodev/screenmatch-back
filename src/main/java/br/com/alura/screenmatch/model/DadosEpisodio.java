@@ -11,3 +11,4 @@ public record DadosEpisodio(@JsonAlias("Title") String titulo,
 
 
 }
+
