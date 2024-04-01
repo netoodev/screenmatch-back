@@ -5,6 +5,7 @@ import br.com.alura.screenmatch.repository.SerieRepository;
 import br.com.alura.screenmatch.service.ConsumoApi;
 import br.com.alura.screenmatch.service.ConverteDados;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -33,6 +34,7 @@ public class Principal {
                     1 - Buscar séries
                     2 - Buscar episódios
                     3 - Listar séries buscadas
+                    4 - Buscar séries por título
                                     
                     0 - Sair
                     """;
@@ -51,6 +53,9 @@ public class Principal {
                 case 3:
                     listarSeriesBuscadas();
                     break;
+                case 4:
+                    buscarSeriePorTitulo();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -60,7 +65,9 @@ public class Principal {
         }
     }
 
-        private void buscarSerieWeb() {
+
+
+    private void buscarSerieWeb() {
             DadosSerie dados = getDadosSerie();
             Serie serie = new Serie(dados);
             //dadosSeries.add(dados);
@@ -82,9 +89,7 @@ public class Principal {
             System.out.println("Escolha uma série pelo nome: ");
             var nomeSerie = scanner.nextLine();
 
-            Optional<Serie> serie = series.stream()
-                    .filter(s -> s.getTitulo().toUpperCase().contains(nomeSerie.toUpperCase()))
-                    .findFirst();
+            Optional<Serie> serie = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
 
             if (serie.isPresent()) {
                 var serieEncontrada = serie.get();
@@ -115,4 +120,16 @@ public class Principal {
                     .sorted(Comparator.comparing(Serie::getGenero))
                     .forEach(System.out::println);
         }
+
+    private void buscarSeriePorTitulo() {
+        System.out.println("Escolha uma série pelo nome: ");
+        var nomeSerie = scanner.nextLine();
+        Optional<Serie> serieBuscada = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
+
+        if (serieBuscada.isPresent()) {
+            System.out.println("Dados da série: " + serieBuscada.get());
+        } else {
+            System.out.println("Série não encontrada!");
+        }
+    }
 }
