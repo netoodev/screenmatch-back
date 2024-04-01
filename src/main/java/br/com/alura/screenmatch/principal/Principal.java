@@ -38,7 +38,7 @@ public class Principal {
                     5 - Buscar séries por ator
                     6 - Top 5 séries
                     7 - Buscar séries por categoria
-                    8 - Buscar séries por temporadas + avaliação
+                    8 - Filtrar séries
                                     
                     0 - Sair
                     """;
@@ -178,7 +178,7 @@ public class Principal {
         var avaliacao = scanner.nextDouble();
         scanner.nextLine();
 
-        List<Serie> seriesPorTemporada = repositorio.findByTotalTemporadasLessThanEqualAndAvaliacaoGreaterThanEqual(temporada, avaliacao);
+        List<Serie> seriesPorTemporada = repositorio.seriesPorTemporadaEAvaliacao(temporada, avaliacao);
         System.out.println("Série com até " + temporada + " temporadas e avaliadas acima de " + avaliacao + ":");
         seriesPorTemporada.forEach(s -> System.out.println(s.getTitulo() + " | " + s.getTotalTemporadas() + " temporadas Avaliação: " + s.getAvaliacao()));
     }
